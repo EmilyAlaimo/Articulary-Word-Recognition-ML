@@ -1,0 +1,41 @@
+paths:
+  data_dir: data            # cartella dei .arff
+  artifacts_dir: artifacts  # dove salvare i checkpoint
+
+files:
+  train_arff: ArticularyWordRecognition_TRAIN.arff  # file train
+  test_arff: ArticularyWordRecognition_TEST.arff    # file test
+
+training:
+  device: cuda              # "cuda" se disponibile, altrimenti usa cpu
+  seed: 42                  # seed riproducibilità
+  epochs: 50                # epoche massime
+  batch_size: 32            # batch size
+  val_ratio: 0.2            # percentuale di validation
+  lr: 0.001                 # learning rate Adam
+  weight_decay: 0.0001     # L2 reg
+  early_stopping_patience: 10  # stop se non migliora per N epoche
+  monitor: loss            # per best+scheduler
+
+scheduler:
+  factor: 0.5               # moltiplica LR per questo fattore
+  patience: 5               # epoche senza miglioramento prima di ridurre LR
+  min_lr: 0.000001          # LR minimo
+
+model:
+  rnn:
+    hidden_dim: 128         
+    num_layers: 2           # layers (2 -> dropout interno attivo)
+    dropout: 0.3            # dropout tra layer
+
+  lstm:
+    hidden_dim: 128
+    num_layers: 2
+    dropout: 0.3
+    bidirectional: true     # bidirezionale
+
+  gru:
+    hidden_dim: 128
+    num_layers: 2
+    dropout: 0.3
+    bidirectional: true     # bidirezionale
